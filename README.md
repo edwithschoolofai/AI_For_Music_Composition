@@ -4,7 +4,7 @@
 
 
 모델은 [Lakh Pianoroll Dataset](https://salu133445.github.io/lakh-pianoroll-dataset/)
-(LPD)과 [multi-track piano-roll](https://salu133445.github.io/musegan/data) 데이터 집합을 비지도학습 접근방식으로 훈련시킵니다. 제안된 모델은 사용자로부터 주어진 트랙을 합치거나 잘라내는 방식으로 음악을 생성할 수 있습니다. 구체적으로 우리는 모델을 사용하여 베이스, 드럼, 기타, 피아노, 현악기 트랙으로 구성된 팝송을 생성할 수 있습니다.
+(LPD)과 [multi-track piano-roll](https://salu133445.github.io/musegan/data) 데이터 집합을 비지도학습 접근방식으로 훈련시킵니다. 제안된 모델은 사용자로부터 주어진 트랙을 합치거나 잘라내는 방식으로 음절을 생성할 수 있습니다. 구체적으로 우리는 모델을 사용하여 베이스, 드럼, 기타, 피아노, 현악기 트랙으로 구성된 팝송을 생성할 수 있습니다.
 
 샘플 결과는 [여기](https://salu133445.github.io/musegan/results)에서 확인할 수 있습니다.
 
@@ -17,50 +17,47 @@
 
 우리는 네트워크를 [Lakh Pianoroll Dataset](https://salu133445.github.io/lakh-pianoroll-dataset/)
 (LPD)로 훈련시킵니다. 우리는 모델을 사용하여 
-*드럼*, *피아노*, *기타*, *베이스*, *앙상블*, *리드*, *Synth lead* ,*Synth Pad*등 8개의 트랙으로 구성된 four-bar? 음악을 생성합니다. 오디오 샘플은 [여기](https://salu133445.github.io/bmusegan/samples)에 제공되어 있습니다.
+*드럼*, *피아노*, *기타*, *베이스*, *앙상블*, *리드*, *Synth lead* ,*Synth Pad*등 8개의 트랙으로 구성된 four-bar? 음절을 생성합니다. 오디오 샘플은 [여기](https://salu133445.github.io/bmusegan/samples)에 제공되어 있습니다.
 
 
 ## 코드 실행
 
 ### 훈련 데이터 준비
 
-- Prepare your own data or download our training data
+- 여러분 자신의 데이터를 준비하거나 우리의 훈련 데이터를 다운로드 합니다.
 
-  The array will be reshaped to (-1, `num_bar`, `num_timestep`, `num_pitch`,
-  `num_track`). These variables are defined in `config.py`.
+  배열은 (-1, `num_bar`, `num_timestep`, `num_pitch`,
+  `num_track`)의 형태로 재형성되어야 합니다. 변수들은 `config.py`에 정의되어 있습니다.
 
   - [`lastfm_alternative_5b_phrase.npy`](https://drive.google.com/uc?export=download&id=1F7J5n9uOPqViBYpoPT5GvE4PjCWhOyWc) (2.1 GB)
-    contains 12,444 four-bar phrases from 2,074 songs with *alternative* tags.
-    The shape is (2074, 6, 4, 96, 84, 5). The five tracks are *Drums*, *Piano*,
-    *Guitar*, *Bass* and *Strings*.
+    *alternative*로 태그된 2074개 곡으로부터 12,444개의 four-bar 악절으로 구성되어 있습니다.
+    배열의 형태는 (2074, 6, 4, 96, 84, 5) 입니다. 다섯 개의 트랙은 각각 *드럼*, *피아노*,
+    *기타*, *베이스*, *현악기* 입니다.
   - [`lastfm_alternative_8b_phrase.npy`](https://drive.google.com/uc?export=download&id=1x3CeSqE6ElWa6V7ueNl8FKPFmMoyu4ED) (3.6 GB)
-    contains 13,746 four-bar phrases from 2,291 songs with *alternative* tags.
-    The shape is (2291, 6, 4, 96, 84, 8). The eight tracks are *Drums*, *Piano*,
-    *Guitar*, *Bass*, *Ensemble*, *Reed*, *Synth Lead* and *Synth Pad*.
-  - Download the data with this [script](training_data/download.sh).
+    *alternative*로 태그된 2291개 곡으로부터 13746개의 four-bar 악절으로 구성되어 있습니다.
+    배열의 형태는 (2291, 6, 4, 96, 84, 8) 입니다. 여덟 개의 트랙은 각각 *드럼*, *피아노*,
+    *기타*, *베이스*, *앙상블*, *Reed*, *Synth Lead*, *Synth Pad* 입니다.
+  - 이 [스크립트](training_data/download.sh)를 통해 다운로드 받습니다.
 
-- (optional) Save the training data to shared memory with this [script](training_data/store_to_sa.py).
+- (선택사항) 이 [스크립트](training_data/store_to_sa.py)를 통해 훈련 데이터를 공유 메모리에 저장합니다.
 
-- Specify training data path and location in `config.py`. (see below)
+- `config.py`에서 훈련 데이터의 경로와 위치를 수정합니다. (아래 참조)
 
-### Configuration
+### 환경 설정
 
-Modify `config.py` for configuration.
+환경 설정을 위해 `config.py` 파일을 수정합니다.
 
-- Quick setup
+- 빠른 설정
 
-  Change the values in the dictionary `SETUP` for a quick setup. Documentation
-  is provided right after each key.
+  빠른 설정을 원한다면 `SETUP` 디렉토리의 값을 변경합니다. 문서는 각각의 키마다 제공되어 있습니다.
 
-- More configuration options
+- 더 많은 환경 설정 옵션
 
-  Four dictionaries `EXP_CONFIG`, `DATA_CONFIG`, `MODEL_CONFIG` and
-  `TRAIN_CONFIG` define experiment-, data-, model- and training-related
-  configuration variables, respectively.
+  `EXP_CONFIG`, `DATA_CONFIG`, `MODEL_CONFIG`, `TRAIN_CONFIG` 디렉토리는 각각 환경, 데이터, 모델, 훈련 관련 환경 설정 변수를 정의합니다.
 
   > The automatically-determined experiment name is based only on the values
 defined in the dictionary `SETUP`, so remember to provide the experiment name
-manually (so that you won't overwrite a trained model).
+manually (so that you won't overwrite a trained model). >> 잘 모르겠습니다.
 
 ### 실행
 
