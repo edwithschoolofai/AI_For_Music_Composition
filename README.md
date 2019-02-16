@@ -12,7 +12,7 @@
 
 [BinaryMuseGAN](https://salu133445.github.io/bmusegan/)은 [MuseGAN](https://salu133445.github.io/musegan/) 프로젝트의 후속 프로젝트입니다.
 
-이 프로젝트에서 생성자가 생성한 피아노 곡으로, CNN 모델을 위한 판별자 학습이 얼마나 어려운 지 살펴볼 겁니다. 이진화(binarization) 이슈를 극복하기 위해 생성자에 추가적으로 리파이너(refiner) 네트워크를 추가하는 것이 좋습니다. 리파이너 네트워크는 미리 학습시킨 생성자가 생성한 실제 예측값을 이진값으로 바꿔줍니다. 이 모델로, 테스트 때 바로 피아노 곡을 이진값으로 생성할 수 있습니다.
+이 프로젝트에서 생성자가 생성한 피아노 곡으로, CNN 모델을 위한 판별자 학습이 얼마나 어려운 지 살펴볼 겁니다. 이진화(binarization) 처리를 위해 리파이너(refiner) 네트워크를 추가해 주는 것이 좋습니다. 리파이너 네트워크는 미리 학습시킨 생성자가 생성한 실제 예측값을 이진값으로 바꿔줍니다. 이 모델로, 테스트 때 바로 피아노 곡을 이진값으로 생성할 수 있습니다.
 
 
 [Lakh Pianoroll Dataset](https://salu133445.github.io/lakh-pianoroll-dataset/)
